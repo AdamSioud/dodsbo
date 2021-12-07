@@ -1,0 +1,71 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt oss</title>
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapForm.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    <!--Innhold-->
+    <div class="wrapper">
+        <!--Viser eventuell success-melding ved sendt epost-->
+        {% if messages %} 
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h1 class="overskrift">KONTAKT</h1>
+        
+        <!--Innsendingsskjema til epost-->
+        <div class="innsendingsskjema">
+            <h2 id="epost-overskrift">SEND OSS EN E-POST</h2>
+            <form method="POST">
+                {% csrf_token %} <!--Sikkerhet-->
+                {% load crispy_forms_tags %} <!--Boostrap-bibliotek for forms-->
+                {{form | crispy}}
+                <!--Hvordan endre navnet på knappen submit-->
+                <input class="btn btn-default" type="submit"  name="option">  
+            </form>
+        </div>
+
+        <!--Boks for kontakt-info-->
+        <div class="kontakt-info">
+            <h4>Adresse</h4>
+            <p>Kolbjørn Hejes vei 1 E, 7034 Trondheim</p>
+
+            <h4>Telefonnummer</h4>
+            <p>13 37 69 69</p>
+
+            <h4>E-post</h4>
+            <p>mailroddi@gmail.com</p>
+
+            <h4>Åpningstider</h4>
+            <p>Man-fre: 08:00 - 18:00</p>
+            <p>Lør-søn: 10:00 - 16:00</p>
+        </div>
+
+        <!--Kart-->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3893.799736569748!2d10.401428191689863!3d63.41866293500049!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d312797848d8d%3A0xb4451c6f06390e4b!2sKjelhuset!5e0!3m2!1sno!2sno!4v1616852850949!5m2!1sno!2sno"></iframe>
+    </div>
+    
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>

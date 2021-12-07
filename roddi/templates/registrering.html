@@ -1,0 +1,46 @@
+<!--Mangler god styling og kan vurdere å legge inn felt for telefonnummer (er litt tricky)-->
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrering</title>
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapForm.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    <!--Innhold-->
+    <!--Laster crispy-forms-->
+    {% load crispy_forms_tags %}
+    <div class="wrapper">
+        <h1 class="overskrift">OPPRETT EN BRUKER</h1>
+
+        <!--Registreringsskjema for brukere bruker. Henter BrukerRegistreringForm fra forms.py-->
+        <form method='POST'>
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form | crispy }}
+            </fieldset>
+            <button type='submit' class="btn btn-success">SEND INN</button>
+        </form>
+
+        <!--Link til innlogging dersom brukeren allerede har en bruker-->
+        <small class="text-muted">
+            <p>Har du allerede en bruker? Logg inn <a href="{% url 'logginn' %}">her</a>.</p>
+        </small>
+    </div>
+    
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>

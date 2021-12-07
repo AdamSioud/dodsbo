@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dødsbo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapTable.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+  </head>
+  <body>
+
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    {% if user.is_authenticated %}
+    <!--Hvis brukeren er innlogget kjøres koden nedenfor-->
+
+    <!--Innhold-->
+    <div class="wrapper">
+      
+      <!--Overskrift-->
+      <header>
+        <h1 class ="overskrift">MINE DØDSBO</h1>
+      </header>
+
+      <!--Tabell over dødsbo-->
+      <!--Fjern innhold blir brukt for å indikere hva som fjernes ved lav skjermoppløsning (mobil osv.)-->
+      <table class="table table-striped table-responsive">
+          <thead>
+            <tr>
+                <th>Navn</th>
+                <th class="fjern-innhold">Beskrivelse</th>
+                <th class="fjern-innhold">Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+          </thead>
+
+          <!--Viser kun dødsboene brukeren er medlem av, samt riktig status for dødsboet.-->
+          <tbody> 
+            {% for dodsbo in Dodsbos %}
+            {% if user in dodsbo.members.all %} 
+            <tr>
+              <td>{{dodsbo.name}}</td>
+              <td class="fjern-innhold">{{dodsbo.descritption}}</td>
+              
+              {% if dodsbo.statusoppgjør == 'PÅGÅR'%}
+              <td class="fjern-innhold">Pågår</td>
+              {% elif dodsbo.statusoppgjør == 'ENUKEIGJEN'%}
+              <td class="fjern-innhold">Fristen for å velge er snart ute</td>
+              {% elif dodsbo.statusoppgjør == 'AVSLUTTET'%}
+              <td class="fjern-innhold">Avsluttet</td>
+              {% endif %}
+
+              {% if dodsbo.image%}
+                <td> <img class="mini fjern-innhold"src="{{dodsbo.image.url}}" alt=""> </td>
+              {% endif %}    
+                {%if dodsbo.statusoppgjør != 'AVSLUTTET'%}
+                <td>
+                  <a href="/dodsbo/{{dodsbo.id}}"><button class="btn btn-default">Se dødsbo</button></a>
+                </td>
+                {%else%}
+                <td>
+                  <a href="/dodsbo/{{dodsbo.id}}"><button class="btn btn-default">Se fordeling</button></a>
+                </td>
+                {%endif%}
+            </tr>        
+            {% endif %} 
+            {% endfor %} 
+          </tbody>
+      </table>
+    </div>
+
+
+
+    {% else %}
+    <!--Hvis brukeren IKKE er innlogget kjøres koden nedenfor-->
+    
+    <!--Innhold-->
+    <div class="wrapper">
+      <p class="ikke-innlogget">Du må logge inn for å delta i dødsbo.</p>
+    </div>
+
+
+
+    {% endif %} 
+    <!--Koden nedenfor vises uansett om brukeren er innlogget eller ikke-->
+
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+
+  </body>
+</html>

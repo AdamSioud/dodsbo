@@ -1,0 +1,56 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logg inn</title>
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapForm.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    <!--INNHOLD-->
+    <div class="wrapper">
+        <h1 class="overskrift">LOGG INN</h1>
+
+        <!--Innloggingsskjema for brukere-->
+        <form method='POST'> 
+            {% csrf_token %} 
+            <div class="form-group">
+                <input class="form-control" type="text" name="username" placeholder="Brukernavn">
+                <input class="form-control" type="password" name="password" placeholder="Passord"> 
+            </div>
+            <button type='submit' class="btn btn-default">LOGG INN</button> <!--"Logg inn"-knapp-->
+        </form>
+
+        <!--Link til registrering dersom brukeren ikke har en bruker-->
+        <small class="text-muted">
+            <p>Har du ikke registrert en bruker? Registrer deg <a href="{% url 'registrering' %}">her</a>.</p>
+        </small>
+        
+
+        <!--Viser eventuelle success/error-meldinger ved innlogging (definert i views.py for def registrering og def logginn)-->
+        {% if messages %} 
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!--Navbar brukes på flere sider og importeres der den trengs-->
+<nav>
+    <!--Logo med hjem-link-->
+    <div class="logo">
+        <h1><a href="{% url 'home' %}">RØDDI</a></h1>
+    </div>
+    
+    <!--Lenker-->
+    <ul class="nav-lenker">
+        <li><a href="{% url 'home' %}">HJEM</a></li>
+        <!--Sjekker om brukeren er innlogget og om brukeren er admin-->
+        {% if user.is_authenticated %}
+            {% load gruppe_filter %}
+            {% if user|i_gruppe:"admin" %}
+            <!--Linkene i menyen til admin-->
+            <li><a href="{% url 'dashboard' %}">STATISTIKK</a></li>
+            <li><a href="{% url 'admin:index' %}">ADMIN-PANEL</a></li>
+            <li><a href="{% url 'dodsbo' %}">DØDSBO</a></li>
+            <li><a href="{% url 'loggut' %}">LOGG UT</a></li>
+            {% else %}
+            <!--Linkene i menyen til en innlogget vanlig bruker-->
+            <li><a href="{% url 'kontakt' %}">KONTAKT</a></li>
+            <li><a href="{% url 'dodsbo' %}">DØDSBO</a></li>
+            <li><a href="{% url 'loggut' %}">LOGG UT</a></li>
+        {% endif %}
+        {% else %}
+            <!--Linkene i menyen til en utlogget bruker-->
+            <li><a href="{% url 'kontakt' %}">KONTAKT</a></li>
+            <li><a href="{% url 'registrering' %}">REGISTRERING</a></li>
+            <li><a href="{% url 'logginn' %}">LOGG INN</a></li>
+        {% endif %}
+    </ul>
+
+    <!--Linjer til Burger-meny til telefon/små skjermer-->
+    <div class="burger-meny">
+        <div class="linje1"></div>
+        <div class="linje2"></div>
+        <div class="linje3"></div>
+    </div>
+</nav>

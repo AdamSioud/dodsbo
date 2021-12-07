@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Påminnelse</title>
+  <!--Laster inn css-filen for email-->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_email.css' %}">
+
+  <!--E-post må ha intern styling-->
+  <style>
+    /* Innhold */
+    .h1 {
+        text-align: center;
+        font: bold Arial;
+        color: black
+    }
+    .p {
+      text-align: center;
+      color: grey;
+      font: Arial;
+      font-weight: lighter;
+    }
+
+    .div {
+      background-color: white;
+      width: 700px;
+      border: 1px solid grey;
+      padding: 50px;
+      margin: 20px;
+    }
+
+    /* Knapp for å komme til siden */
+    .btn {
+      border: 2px solid black;
+      background-color: white;
+      color: black;
+      padding: 14px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    a:hover, a:active {
+      background-color: grey;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <!--Innhold for email som sendes til brukere av et dødsbo som admin har valgt sende en påminnelse til -->
+  <div>
+    <!--Overskrift-->
+    <tr>
+      <h1> Fristen for å legge inn <br>ønsker er snart ute. </h1>
+    </tr>
+
+    <!--Tekst-->
+    <tr>
+      <p> Dødsboet du er regisrert i blir avsluttet om en uke. 
+        <br>
+        <br>
+        Dødsboet er åpent i en uke til. Når en uke er gått vil de ikke lenger være mulig 
+        <br>
+        å legge inn dine ønsker på eiendelene. Når dødsboet avsluttes vil eiendelene bli
+        <br>
+        fordelt basert på ønskense som er lagt inn. Har du ikke lagt inn ønsker?
+        <br> 
+        <br>
+        Trykk for å legge inn
+      </p>
+      <br>
+    </tr>
+    
+    <!--Link til siden-->
+    <tr>
+      <h1>
+        <a href="http://localhost:8000/dodsbo/" class="btn">Legg inn ønsker</a>
+      </h1>
+    </tr>
+  </div>
+  
+</body>
+</html>

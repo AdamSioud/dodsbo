@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Status for {{Eiendel.item_name}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapTable.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+  </head>
+  <body>
+
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    <!--Bare innlogget admin kan gå inn på statussiden til en eiendel. Koden nedenfor kjøres kun dersom bruker er admin.-->
+    {% load gruppe_filter %}
+    {% if user.is_authenticated and user|i_gruppe:"admin" %}
+
+    <!--Innhold-->
+    <div class="wrapper">
+
+      <header>
+        <!--Tilbake-knapp-->
+        <a href="/dodsbo/{{Dodsbo.id}}">
+          <button class="btn btn-default tilbake-knapp" style="float: left">
+            Tilbake til gjenstander
+          </button>
+        </a>
+
+        <br>
+
+        <!--Overskrift-->
+        <h1 class="overskrift">
+          Status på {{Eiendel.item_name}}
+        </h1>
+      </header>
+
+      <!--Viser brukeren som er blitt tildelt en gjenstand, dersom gjenstanden er tildelt-->
+      <h3 id="tildelt">
+        {% if Tildeling %}
+          {% for tildelt in Tildeling %}
+            Gjenstanden er tildelt: {{tildelt.user}}
+          {% endfor %}
+        {% endif %}
+      </h3>
+      
+      <!--Tabell for info om brukernes valg og prioriteringer for gjenstanden-->
+      <table class="table table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>Bruker</th>
+            <th>Valg</th>
+            <th class="fjern-innhold">Kommentar</th>
+            <th>Prioritering</th>
+            {% if Tildeling %}
+            {% else %}
+            <th>Tildel</th>
+            {% endif %}
+          </tr>
+        </thead>
+        
+        <tbody>
+          <!-- Går gjennom alle medlemmene lagt til i valgt dødsboet -->
+          {% for bruker in Dodsbo.members.all %}
+          <!-- Admin skal ikke vises fordi admin ikke skal legge inn valg eller prioritering -->
+          {% if bruker.username != "admin" %}
+          <tr>
+            <td>{{bruker}}</td>
+            
+            <!-- Sjekker om det finnes valg/kommentarer. Skriver at det ikke finnes valg/kommentar hvis det er tilfellet -->
+            {% load bruker_i_tags %}
+            <!--Bruker tag til å finne ut om det finnes et valg som hører til brukeren-->
+            {% if Valg|brukers_valg:bruker.id %}
+            {% for valg in Valg %}
+            {% if valg.user == bruker %}
+            <td>{{valg.get_valg}}</td>
+            <td class="fjern-innhold">{{valg.comment}}</td>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <td>Ingen valg</td>
+            <td class="fjern-innhold">Ingen kommentar</td>
+            {% endif %}
+
+            <!-- Sjekker om det finnes prioriteringer for eiendelen -->
+            {% if Prioritering|brukers_prio:bruker.id %}
+            <!-- Går gjennom alle prioriteringer for å se om brukeren har lagt til noe.
+            Viser den frem hvis den finnes, ellers står det ingen prioriteringer.
+            Løkken stopper hvis den finner valg/kommentar i databasen -->
+            {% for prio in Prioritering%} 
+            {% if prio.userprio == bruker %}
+            <td>{{prio.get_valg}}</td>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <td>Ingen prioritering</td>
+            {% endif %}
+
+            {% if Tildeling %}
+            {% else %}
+            <td>
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="user" name="user" value="{{bruker.id}}" />
+                <input type="submit" id="submit_btn" value="Tildel" class="btn btn-default"/>
+              </form>
+            </td>
+            {% endif %}         
+            {% endif %}
+            {% endfor %}
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+
+
+    {%else%}
+    <!--Hvis IKKE admin kjøres koden nedenfor-->
+
+    <div class="wrapper">
+      <p>Bare innlogget admin kan se denne siden</p>
+    </div>
+
+
+
+    {% endif %}
+    <!--Koden nedenfor vises uansett om brukeren er innlogget eller ikke-->
+
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Liste over gjenstander</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapForm.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrapTable.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+  </head>
+  <body>
+
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    {% if user.is_authenticated %}
+    <!--Hvis brukeren er innlogget kjøres koden nedenfor-->
+
+    <!--Innhold-->
+    <div class="wrapper">
+      <header>
+        <a href="/dodsbo/"><button class="btn btn-default tilbake-knapp">Tilbake til mine dødsbo</button></a>
+        <br>
+        <h1 class="overskrift"> LISTE OVER GJENSTANDER I DØDSBOET</h1>
+      </header> 
+
+      <!--Søkefunksjonalitet -->
+      <div class="innhold_soke">
+        <div class="searchBar">
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <input id="søkefelt" type="text" class="form-control" name="sokeord"  placeholder="Søk etter en eiendel">
+              {%if resultat_sjekk %}
+              <small id="emailHelp" class="form-text text-muted">Søket ga ingen resultater. Prøve et annet søkeord, eller trykk "Søk" for å se alle eiendeler.</small> 
+              {% endif %}
+            </div>
+            <div class="tom"></div>
+            <div class="knapp">
+              <button type="submit" value="syste" class="btn btn-primary">Søk</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <br>
+      <br>
+     
+      <!--Tabell for alle gjenstandene i dødsboet-->
+      <table class="table table-striped table-responsive">
+        <thead>
+          <tr>          
+            <th>Navn</th>
+            <th class="fjern-innhold">Beskrivelse</th>
+            {% load gruppe_filter %}
+            {% if user|i_gruppe:"admin" %}
+            <th>Brukernes aktivitet</th>
+            {% else %}
+            <th>Valg og kommentar</th>
+            {% endif %}
+            <th class="fjern-innhold">Bilde</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {% for item in items %}
+          <tr>          
+            <td>{{item.item_name}}</td>
+            <td class="fjern-innhold">{{item.item_desc}}</td>
+            <td>
+              <!-- Hvs man er admin, skal man kunne gå til statussiden -->
+              {% load gruppe_filter %}
+              {% if user|i_gruppe:"admin" %}
+              <a href="/tildeling/{{item.id}}/"><button class="btn btn-default">Se detaljer</button></a>
+              {% else %}
+              <!-- Hvs man er en vanlig bruker, skal man kunne gå til siden for handling -->
+              <a href="/vis/{{item.id}}/"><button class="btn btn-default">Velg handling</button></a>
+              {% endif %}
+              </td>
+            {% if item.item_image%}
+            <td class="fjern-innhold">          
+              <img class="img-responsive mini" src="{{item.item_image.url}}" />
+            </td>
+            {% endif %}
+
+            <!--Skriver ut om status til en eiendel -->
+            <td>
+            <!-- itemid er ID til eiendelen, tildeling er enten hvem eiendelen har blitt 
+              tildelt til eller hvor mange brukere som har svart -->
+              {% for itemid, tildeling in status.items %} 
+              {% if itemid == item.id %}
+                <p>{{tildeling}}</p>
+              {% endif %}
+            {% endfor %}
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    
+    {%else%}
+    <!--Hvis brukeren IKKE er innlogget kjøres koden nedenfor-->
+
+    <!--Innhold-->
+    <div class="wrapper">
+      <p class="ikke-innlogget">Du må logge inn for å se denne siden.</p> 
+    </div>  
+
+
+
+    {% endif %}    
+    <!--Koden nedenfor vises uansett om brukeren er innlogget eller ikke-->
+    
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+
+  </body>
+</html>

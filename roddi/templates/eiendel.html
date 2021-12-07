@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Del dine ønsker!</title>    
+    <!--Laster inn stylesheet for bootstrap, ikoner for sosiale-medier og style.css-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrapForm.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">  
+  </head>
+  <body>
+
+    <!--Navbar-->
+    {% include 'navbar.html' %}
+
+    {% if user.is_authenticated %}
+    <!--Hvis brukeren er innlogget kjøres koden nedenfor-->
+
+    <!--Innhold-->
+    <div class="wrapper">
+
+      <!--Tilbake-knapp-->
+      <header>
+        <a href="/dodsbo/{{item.dodsbo.id}}"><button class="btn btn-default tilbake-knapp">Tilbake til gjenstander</button></a>
+        <br>
+        <h1 class="overskrift">{{item.item_name}}</h1>
+      </header>  
+
+      <!--Bilde av eiendelen-->
+      <img class="image-responsive stor" src="{{item.item_image.url}}"> 
+
+      <!--Gjenstandens beskrivelse-->
+      <div id="eiendel-beskrivelse">       
+        <h2 class="del-overskrift">Beskrivelse</h2>
+        <p>{{item.item_desc}}</p> 
+      </div>
+
+      <!--Dersom gjenstanden er tildelt (vil ikke kunne dele ønsker eller kommentere)-->
+      {% if Tildeling %}
+      <div id="eiendel-tildelt">
+        <h2 class="del-overskrift">Gjenstanden er tildelt {{Tildeling.user}}, og kan ikke kommenteres eller utføres handlinger på</h2> 
+      </div> 
+      </div> 
+      <!--^Taggen ovenfor avslutter wrapper div-en, ikke slett-->      
+      
+      <!--Dersom gjenstanden ikke er tildelt (vil kunne dele ønsker og kommentere)-->
+      {% else %}
+      <div id="eiendel-ønske">
+        <h2 class="del-overskrift">Ditt ønske for gjenstanden</h2>
+
+        <!--Viser brukeren sitt lagrede valg og kommentar til admin-->
+        {% for valg in Valg %} 
+          {% if valg.item_id == item.id and valg.user_id == user.id %}
+            <p>Lagret valg: {{valg.get_valg}}</p>
+            <p>Kommentar: {{valg.comment}}</p>
+          {% endif %}
+        {% endfor %}
+
+        <!--Form som brukeren kan bruke til å dele ønsker om hva som skal skje med eiendelen-->
+        <form method="post" >
+          {% csrf_token %}    
+          <input type="hidden" id="user" name="user" value="{{user.id}}" />
+          <input type="hidden" id="item" name="item" value="{{item.id}}" />   
+          <label for="choice">Velg en handling:</label>
+          <br>
+          <select name="choice" id="choice" class="btn btn-default">        
+            <option value="default">---</option>
+            <option value="K">Behold</option>
+            <option value="D">Doner</option>
+            <option value="T">Kast</option>            
+          </select>
+
+          <!--Kommentarfelt der brukeren kan skrive kommentar til admin-->
+          <textarea type="text" id="kommentar-admin" class="form-control textarea" placeholder="Kommentar til admin" name="comment" maxlength="200" required></textarea>
+          <input type="submit" id="submit_btn" value="Legg til" class="btn btn-default"/>
+
+          <!--Gir beskjed om at valg er oppdatert-->
+          {% if messages %} 
+            {% for message in messages %}
+              {{message}} 
+            {% endfor %}
+          {% endif %}
+        </form>
+
+        <!--Viser brukeren sitt valg for prioritering-->
+        <br>
+        {% for prio in Prioritering %}
+          {% if prio.userprio == user %}
+            {% if prio.itemprio == item %}
+              Lagret prioritering: {{prio.get_valg}}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        <!--Form som brukeren kan bruke til å dele sin prioritering for eienstanden-->
+        <form method="POST">
+          {% csrf_token %} 
+          
+          <input type="hidden" id="itemprio" name="itemprio" value="{{ item.id }}">             
+          <label for="Prioritering" id="prioritering">Velg en prioritering:</label>
+          <br>
+          <select name="PrioriteringsValget" id="PrioriteringsValget" class="btn btn-default">
+            <!--<option value="default">Ikke viktig</option>-->
+            <option value="default">---</option>
+            <option value="1">Ikke viktig</option>
+            <option value="2">Litt interessert</option>
+            <option value="3">Interessert</option>
+            <option value="4">Ganske interessert</option>
+            <option value="5">Veldig interessert</option>
+          </select>
+          <br>
+          <input type="submit" id="submit_btn2" value="Legg til" class="btn btn-default">
+
+          <!--Gir beskjed om at prioritering er oppdatert-->
+          {% if messages_pri %} 
+            {% for message in messages %}
+              {{message}}
+            {% endfor %}
+          {% endif %}
+        </form>
+      </div>    
+
+      <!--Seksjon for kommentarfelt -->
+      <div id="eiendel-kommentar">
+        <h2 class="del-overskrift">Kommentarfelt</h2>
+
+        <!--Selve kommentarfeltet-->
+        <div class="kommentarfelt">
+          <form method="POST">
+            <!--Viser hver kommentar som eksisterer-->
+            {% for kommentar in kommentarer reversed %}
+            <div class="kommentar">
+              <p>
+                <b>{{ kommentar.user.first_name}} {{kommentar.user.last_name}} - {{ kommentar.dato_laget }} </b>
+              </p>                  
+            {{ kommentar.kommentar }}
+            </div>
+          {% endfor %}
+          </form>
+        </div> 
+        
+        <!--Felt for å skrive inn en kommentar-->
+        <form method="post">         
+          {% csrf_token %}
+          <input type ="hidden" id="user" name="user" value="{{user.id}}"/>
+          <textarea type="text" class="form-control ny-kommentar" placeholder="Kommentar til andre deltakere" name="kommentar" maxlength="600" rows="4" cols="50" required></textarea>
+          <button type="submit" class="btn btn-default">Kommenter</button>                   
+        </form>
+
+        <!-- Viser suksess-melding dersom man publiserer en kommentar-->
+        {% if ny_kommentar %} 
+          <div class="alert alert-success" role="alert">
+            Kommentaren avventer godkjenning av administrator        
+          </div>
+        {% endif %}
+      </div>
+    </div>              
+    {% endif %}
+
+
+
+    {%else%}
+    <!--Hvis brukeren IKKE er innlogget kjøres koden nedenfor--> 
+
+    <!--Innhold-->
+    <div class="wrapper">
+      <p class="ikke-innlogget">Du må logge inn for å se denne siden.</p> 
+    </div>  
+
+
+
+    {% endif %}
+    <!--Koden nedenfor vises uansett om brukeren er innlogget eller ikke-->
+
+    <!--Footer-->
+    {% include 'footer.html' %}
+
+    <!--Laster inn JavaScript-fil fra static-mappen-->
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,659 @@
+/* Setup for hele siden */
+@font-face {
+    font-family: Milliard Bold;
+    font-style: normal;
+    font-weight: normal;
+    src: local(Milliard Bold), url('Rene Bieder  Milliard Bold.woff') format('woff');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Setup slutt */
+
+
+/* Wrapper for innhold - sentrerer alt innhold på siden (ikke meny) */
+.wrapper {
+    margin: 0 auto;
+    width: 70%;
+    min-height: 93vh; /* 100 - navbar sin høyde + 1*/
+}
+
+/* Nødvendig for at footer skal registrere float-elementer sin høyde (eks. kontaktskjema) */
+.wrapper:after { 
+    content: ""; 
+    display: block; 
+    clear: both; 
+}
+/* Wrapper slutt */
+
+
+/* Footer */
+footer {
+    position: absolute;
+    background-color: #3d3d3d;
+    height: auto;
+    width: 100vw;
+    max-width: 100%;   
+    margin-top: -4px;
+    padding-top: 4rem;
+}
+
+.footer-innhold {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-innhold p {
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5rem;
+    max-width: 40vw;
+    margin: 1rem auto;
+}
+
+/* Styling for ikoner av sosial medier */
+.sosiale-medier {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.sosiale-medier li {
+    margin: 0 0.7rem;
+}
+
+.sosiale-medier a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.sosiale-medier a i {
+    font-size: 1.5rem;
+    transition: color .5s ease;
+}
+
+.sosiale-medier a:hover i {
+    color: salmon;
+}
+/* Footer slutt */
+
+
+/* Table */
+td { 
+    font-family: "Milliard Bold", 'Milliard Bold', sans-serif;
+    
+}
+
+th {
+    font-family: "Milliard Bold", 'Milliard Bold', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+/* Table slutt */
+
+
+/* Boks for kontaktinfo i kontakt.hmtl */
+.kontakt-info {
+    background-color: #BEFBFF;
+    height: 300px;
+    width: 35%;
+    margin-bottom: 1rem;
+    float: left;
+    overflow: hidden;
+    padding: 0.3rem;
+}
+
+.kontakt-info h4 {
+    background-color: #BEFBFF;
+    margin: 1px;
+    margin-top: 1em;
+    font-family: 'Milliard Bold', sans-serif;
+}
+
+.kontakt-info p {
+    background-color: #BEFBFF;
+    font-family: "Milliard Bold", 'Milliard Bold', sans-serif;
+    font-style: italic;
+}
+/* Boks for kontaktinfo slutt */
+
+
+/* Innsendingsskjema i kontakt.html */
+.innsendingsskjema {
+    width: 60%;
+    float: right;
+    overflow: hidden;
+    padding: 3px;
+    margin-top: -35px;
+}
+
+#epost-overskrift {    
+    margin-bottom: 1em;
+    margin-top: 1em;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 400;
+}
+
+/* knapp for sending av e-post */
+.innsendingsskjema .btn-default {
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 400;
+    margin-top: 1em;
+}
+/* Innsendinsskjema slutt */
+
+
+/* iframe (brukes i kontakt.html) */
+iframe {
+    padding: 3px;
+    margin-bottom: 2rem;
+    width: 35%;
+    height: 300px;
+    text-align: center;
+    display: block;
+}
+
+/* btn-default (knappen som primært brukes på siden)*/
+.btn-default {
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 400;
+}
+
+/* Søkefelt (brukes i visning av eiendeler (vis.html)) */
+.innhold_soke{
+    display: grid;
+    grid-template-columns: 2.5fr 0.5fr 4fr;
+}
+
+/* bilde i oversikten over eiendeler */
+.mini {
+    width: 150px;
+}
+
+
+/* eiendel.html */
+/* bilde på siden for kommentarer og brukervalg */
+.stor {
+    max-width: 50%;
+    margin: auto;
+    display: block;
+    margin-bottom: 1em;
+}
+
+/* kommentarboksen der man skriver inn ny kommentar til kommentarfeltet*/
+.ny-kommentar {
+    margin-top: 1em;
+}
+
+/* Seksjon for beskrivelse for eiendelen */
+#eiendel-beskrivelse {
+    width: 50%;
+    padding: 2rem;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+/* Seksjon for valg av ønske for eiendelen */
+#eiendel-ønske {
+    width: 50%;
+    float: left;
+    margin-bottom: 3em;
+    clear: both;
+    padding: 2rem;
+}
+
+/* Seksjon for kommentarfelt */
+#eiendel-kommentar {
+    width: 50%;
+    float: right;
+    margin-bottom: 3em;
+    padding: 2rem;
+}
+
+/* Felt for visning av tidligere kommentarer */
+.kommentarfelt {
+    height: 300px;
+    overflow: scroll;
+} 
+
+/* Hver enkelt kommentar i feltet for tidligere kommentarer */
+.kommentar {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-top: 1em;
+    border-top: 1px solid rgb(231, 231, 231);
+}
+
+/* Felt for kommentar som sendes til admin med ønske for eiendel */
+#kommentar-admin {
+    width: 50%;
+}
+
+/* Label for valg av prioritering */
+#prioritering {
+    margin-top: 1rem;
+}
+/*eiendel ferdig*/
+
+
+/* dropdown-menyer */
+select {
+    margin-bottom: 10px;
+}
+
+
+/* Tilbake-knapp */
+.tilbake-knapp {
+    margin-top: 2em;
+    float: left;
+}
+
+/* Dempet tekst (finnes i registrering.html og loginn.html) */
+small p {
+    margin-bottom: 30px;
+}
+
+/* fjerner "liste-dotter" fra passord-listen i siden for registrering */
+small ul {
+    list-style-type: none;
+}
+
+/* Overskrifter*/
+.overskrift { 
+    padding-top: 2em;
+    margin-bottom: 2rem;
+    text-align: center;
+    letter-spacing: 2px;
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+/*Del-overskrifter*/
+.del-overskrift {
+    text-align: center;
+    letter-spacing: 2px;
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 400;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+}
+
+/*Tekst*/
+.tekst {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Milliard Bold', sans-serif;
+    font-weight: 300;
+}
+
+/*Teksten som indikerer hvem som har blitt tildelt en eiendel (i tildelt.html)*/
+#tildelt {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 3.5rem auto;
+}
+
+/*Overskrift til forside*/
+#forside-overskrift {
+    text-transform: uppercase;
+    margin-top: 20vh;
+}
+
+/* Meny-linjen */
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    background-color: #FF533D;
+    font-family: 'Milliard Bold', serif;
+}
+
+
+/* Logo-tekst (brukes i nav-bar) */
+.logo {
+    letter-spacing: 3px;
+    font-size: 1.3rem;
+    
+}
+
+.logo a {
+    text-decoration: none;
+    color: #eee;
+    background-color: #FF533D;
+}
+/* Logo-tekst (slutt) */
+
+
+/* Lenker i menyen */
+.nav-lenker {
+    display: flex; /* sidestiller*/
+    justify-content:  space-around;
+    width: 50%;
+    background-color: #FF533D;
+}
+
+.nav-lenker li {
+    list-style: none;
+    margin: 10px;
+    background-color: #FF533D;
+    
+}
+
+.nav-lenker a {
+    color: #eee;
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #FF533D;
+}
+
+.nav-lenker a:hover {
+    color:rgb(206, 206, 206);
+}
+/* Lenker i menyen slutt */
+
+
+/* Dashboard */
+.card{    
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 50px;   
+    width: 18rem;
+}
+
+.card-text, .card-title{ 
+    text-align: center;  
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.velkommen_tittel{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;  
+}
+
+.container_dropdown{
+    display: flex;
+    justify-content: center;
+}
+
+.innhold_dropdown{
+    display: grid;
+    grid-template-columns: 20fr 0.5fr 4fr;
+  }
+
+.medlemmer_tekst{
+    margin-bottom: 20rem;
+}
+
+.din-oversikt{
+    margin-top: 20%;
+}
+
+#titel-oversik{
+    color: #FF533D;
+    margin-bottom: 2%;
+}
+/* Dashboard slutt */
+
+
+/* Burger-meny for mobil og små skjermer */
+.burger-meny {
+    display: none;
+    cursor: pointer;
+    background-color: #FF533D;
+}
+
+.burger-meny div {
+    width: 25px;
+    height: 2px;
+    background-color:  rgb(241, 241, 241);
+    margin: 5px;
+    transition: all 0.3s ease;
+    
+}
+/* Burger-meny slutt */
+
+
+
+/* Hva som skjer når skjermen blir mindre (tablet-størrelse) */
+@media screen and (max-width:768px) {
+    
+    /* Nav-bar endres */
+    body {
+        overflow-x: hidden;
+        padding-top: 60px;
+    }
+
+    /* Fjerner innhold som ikke så relevant */
+    .fjern-innhold {
+        display: none;
+    }
+
+    /* Gjør overskrifter mindre */
+    .overskrift {
+        font-size: 25px;
+        margin-top: 2.5em;
+    }
+
+    .del-overskrift {
+        font-size: 20px;
+    }
+
+    /* Utnytter plassen i dashboard bedre */
+    .card-body {
+        width: 100%;
+    }
+
+    /*Slik at innholdet kommer over alt annet*/
+    nav{
+        z-index: 1;
+    }
+
+    /*Øker bredden for søkefelt*/
+    #søkefelt {
+        width: 50vw;
+    }
+
+
+    /*Tilpasser lenkene i menyen til hamburger-menyen*/
+    .nav-lenker {
+        position: absolute;
+        right: 0px;
+        height: 92vh;
+        top: 8vh;
+        background-color: #FF533D;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        transform: translatex(100%);
+        transition: transform 0.5s ease-in;
+    }
+
+    .nav-lenker li {
+        opacity: 0;
+    }
+
+    .logo a {
+        padding: 0.5px;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .burger-meny {
+        display: block;
+    }
+
+
+    /* Reformatering av hvor stor del av skjermen som benyttes */
+    .wrapper {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    /* Footer (justerer så hele plassen blir utnyttet)*/
+    .footer-innhold p {
+        max-width: 100%;
+    }
+
+
+    /* kontakt.html */
+    .innsendingsskjema {
+        width: 100%;
+    }
+
+    .kontakt-info {
+        width: 100%;
+    }
+
+    iframe {
+        width: 100%;
+    }
+
+
+    /* eiendel.html (justerer så hele plassen blir utnyttet)*/
+    #eiendel-beskrivelse {
+        width: 100%;
+    }
+
+    #eiendel-ønske {
+        width: 100%;
+    }
+
+    #eiendel-kommentar {
+        width: 100%;
+    }
+    /* eiendel.html */
+}
+
+/* Hva som skjer når skjermen blir liten (mobil-størrelse) */
+@media screen and (max-width:500px) {
+
+    /* Gjør overskrifter mindre */
+    .overskrift {
+        font-size: 20px;
+    }
+
+    .del-overskrift {
+        font-size: 15px;
+    }
+
+    #forside-tekst {
+        font-size: 18px;
+    }
+
+
+    /* Reformatering av hvor stor del av skjermen som benyttes */
+    .wrapper {
+        margin: 0 auto;
+        width: 90%;
+    }
+}
+
+
+
+/* Animasjon av burger-menyen åpnes (er aktiv) */
+.nav-aktiv {
+    transform: translateX(0%);
+}
+
+@keyframes navLenkerFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+/* Animasjon av burger-menyen sine linjer (ikon) når den åpnes. Blir til en X. */
+.toggle .linje1 {
+    transform:  rotate(-45deg) translate(-5px, 5px);
+}
+.toggle .linje2 {
+    opacity: 0;
+}
+.toggle .linje3 {
+    transform:  rotate(45deg) translate(-5px, -5px);
+}
+
+
+/* NB! Kode hentet fra https://www.w3schools.com/howto/howto_js_slideshow.asp */
+/* Slideshow container (forside for utlogga brukere) */
+.slideshow-container {
+  height: 100%;  
+  max-width: 100%;
+  position: relative;
+}
+
+.slideshow-container img {
+    height: 92vh;  
+    width: 100%;
+
+}
+
+/* Gjemmer bildene */
+.mySlides {
+  display: none;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Tekst for caption til slideshowet */
+.text {
+  background: #FF533D;
+  font-family: 'Milliard Bold', sans-serif;
+  font-weight: 400;
+  color: white;
+  padding: 8px 12px;
+  font-size: 25px;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 4px;
+}
+
+/* Animering av fade for slideshow */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
