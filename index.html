@@ -1,1 +1,108 @@
-<button onclick='roddi/templates/index.html'>Click me</button>
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Roddi</title>
+        <!--Laster inn stylesheet for ikoner for sosiale-medier og style.css-->
+        {% load static %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'style.css' %}"> 
+    </head>
+    <body>
+
+        <!--Navbar-->
+        {% include 'navbar.html' %}
+
+        {% if user.is_authenticated %}
+        <!--Hvis brukeren er innlogget kjøres koden nedenfor-->
+
+        <!--Innhold-->
+        <div class="wrapper">
+            <!--Personlig indikator på at brukeren er logget inn-->
+            <h1 class = "overskrift">Hei, {{user.username}}</h1>
+
+            <!--Viser ulik tekst basert på om brukeren er admin eller ikke-->
+            {% load gruppe_filter %}
+            {% if user|i_gruppe:"admin" %}
+            <!--Tekst som vises til admin-->
+            <p class="tekst">
+                Du kan se statistikk for bruk av nettsiden gjennom menyen. I tillegg kan du administrere nettsiden gjennom 
+                admin-panelet, eller ved å trykke deg inn på dødsbo. På siden for dødsbo vil du imidlertid kun se status på 
+                eksisterende dødsbo.
+            </p>
+            {% else %}
+            <!--Tekst som vises til vanlig bruker-->
+            <p class="tekst">
+                For å få tilgang til dine eksisterende dødsbo kan du gå til siden for dødsbo. Dersom du ønsker å legge til et nytt dødsbo,
+                må du ta kontakt med oss.
+                <br>
+                <br> 
+                <!--Oppgir info om dødsboene brukeren er en del av, samt når brukeren ble registrert.-->
+                Du er med i {{teller}} dødsbo.  
+                {% if teller %} Av disse dødsbo pågår {{teller_aktive}}. {% if teller_avsluttet %} Der {{teller_avsluttet}} er avsluttet.
+                {%else %}
+                {%endif%}
+                {%endif%}
+                <br>
+                Din bruker ble opprettet {{user.date_joined.date}}. 
+            </p>
+            {%endif%}
+        </div>
+
+
+
+        {% else %} 
+        <!--Hvis brukeren IKKE er innlogget kjøres koden nedenfor-->
+
+        <!--Innhold-->
+        <!--Slideshow container-->
+        <!--NB! Kode fra https://www.w3schools.com/howto/howto_js_slideshow.asp-->
+        <div class="slideshow-container">
+        <!--Bilder til slideshow med tilhørende captions-->
+            <div class="mySlides fade">       
+                <img src="https://content.gallup.com/origin/gallupinc/GallupSpaces/Production/Cms/TGBCMS/i40vk76tfuedrfawivloma.jpg">
+                <div class="text img-responsive">Røddi er en tjeneste som er perfekt for deg som ønsker et ryddig og oversiktlig dødsbo</div>
+            </div>
+            <div class="mySlides fade">
+                <img src="https://images.pexels.com/photos/54133/pexels-photo-54133.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+                <div class="text img-responsive">Vi legger ut eiendelene som skal fordeles og gir alle etterlatte mulighet til å dele sine ønsker når det passer hver enkelt best</div>
+            </div>
+            <div class="mySlides fade">        
+                <img src="https://www.adviseaccountants.com.au/wp-content/uploads/2018/04/real-estate-agent-house-keys-blk-e1523930129658.jpg" >
+                <div class="text img-responsive">Registrer deg i dag for å delta</div>
+            </div>
+        </div>
+
+        <!--Animering av slideshow-->
+        <script>
+        var slideIndex = 0;
+        showSlides();
+        
+        function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 5000); 
+        }   
+        </script>
+
+
+        {% endif %}
+        <!--Koden nedenfor vises uansett om brukeren er innlogget eller ikke-->
+
+        
+        <!--Footer-->
+        {% include 'footer.html' %}
+
+
+        <!--Laster inn JavaScript-fil fra static-mappen-->
+        {% load static %}
+        <script src="{% static 'app.js' %}"></script>
+    </body>
+</html>
